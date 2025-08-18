@@ -30,11 +30,11 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.paging.compose)
     implementation(libs.coil.compose)
-
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
 
     testImplementation(libs.junit)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.mockk)
 }

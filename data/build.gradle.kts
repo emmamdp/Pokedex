@@ -25,6 +25,7 @@ kotlin {
 dependencies {
     implementation(projects.domain)
     implementation(projects.core.common)
+
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi)
     implementation(libs.okhttp)
@@ -35,10 +36,10 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.room.paging)
     ksp(libs.room.compiler)
-    implementation(libs.paging.runtime)
     implementation(libs.coroutines.core)
     implementation(libs.koin.core)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockwebserver)
+    testImplementation(libs.coroutines.test)
 }

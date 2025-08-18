@@ -10,7 +10,7 @@ import com.emdp.features.pokemon_list.navigation.PokemonListRoute
 import com.emdp.features.pokemon_list.navigation.pokemonListScreen
 
 @Composable
-fun AppNavHost() {
+fun PokedexAppNavHost() {
     val nav = rememberNavController()
     NavHost(navController = nav, startDestination = PokemonListRoute.pokemonListRoute) {
         pokemonListScreen(
