@@ -10,7 +10,7 @@ activityCompose = "1.10.1"
 
 # Compose
 composeBom = "2025.08.00"
-navigationCompose = "2.8.2"
+navigationCompose = "2.9.3"
 
 # DI
 koin = "4.1.0"

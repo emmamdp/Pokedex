@@ -1,4 +1,4 @@
-package com.emdp.pokedex
+package com.emdp.pokedex.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType

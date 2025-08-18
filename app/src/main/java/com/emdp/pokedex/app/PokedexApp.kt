@@ -1,4 +1,4 @@
-package com.emdp.pokedex
+package com.emdp.pokedex.app
 
 import android.app.Application
 import com.emdp.core.di.allModules
