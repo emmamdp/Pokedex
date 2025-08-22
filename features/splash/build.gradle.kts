@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.emdp.features.pokemon_list"
+    namespace = "com.emdp.features.splash"
     compileSdk = 36
     defaultConfig { minSdk = 24 }
     buildFeatures { compose = true }
@@ -24,18 +24,13 @@ kotlin {
 }
 
 dependencies {
-    implementation(projects.domain)
     implementation(projects.core.common)
+    implementation(projects.domain)
 
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.coil.compose)
+
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
-
-    testImplementation(libs.junit)
-    testImplementation(libs.coroutines.test)
-    testImplementation(libs.mockk)
 }

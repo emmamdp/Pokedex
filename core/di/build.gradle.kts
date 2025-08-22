@@ -25,6 +25,7 @@ kotlin {
 dependencies {
     implementation(projects.core.common)
     implementation(projects.data)
+    implementation(projects.features.splash)
     implementation(projects.features.pokemonList)
 
     implementation(libs.koin.core)

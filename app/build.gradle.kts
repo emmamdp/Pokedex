@@ -44,7 +44,9 @@ kotlin {
 }
 
 dependencies {
+    implementation(projects.core.common)
     implementation(projects.core.di)
+    implementation(projects.features.splash)
     implementation(projects.features.pokemonList)
 
     implementation(platform(libs.androidx.compose.bom))
