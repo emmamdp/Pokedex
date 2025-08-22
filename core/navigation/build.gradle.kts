@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.emdp.features.ui"
+    namespace = "com.emdp.core.navigation"
     compileSdk = 36
     defaultConfig { minSdk = 24 }
 

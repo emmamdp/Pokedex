@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.emma.domain"
+    namespace = "com.emdp.domain"
     compileSdk = 36
     defaultConfig { minSdk = 24 }
     compileOptions {
