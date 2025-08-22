@@ -27,6 +27,7 @@ dependencies {
     implementation(projects.data)
     implementation(projects.features.splash)
     implementation(projects.features.pokemonList)
+    implementation(projects.features.pokemonDetail)
 
     implementation(libs.koin.core)
 }

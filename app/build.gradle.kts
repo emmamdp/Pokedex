@@ -46,6 +46,7 @@ kotlin {
 dependencies {
     implementation(projects.core.common)
     implementation(projects.core.di)
+    implementation(projects.core.navigation)
     implementation(projects.features.splash)
     implementation(projects.features.pokemonList)
 
