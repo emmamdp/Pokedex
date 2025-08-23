@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -18,18 +19,43 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.emdp.core.common.base.presentation.PokedexBaseState
+import com.emdp.core.navigation.PokedexDestination.OpenPokemonList
 import com.emdp.core.ui.components.progressbar.OrbitingSparkProgress
 import com.emdp.core.ui.textstyle.brand.BrandTitle
 import com.emdp.core.ui.textstyle.brand.BrandTitleSize
 import com.emdp.features.splash.R
 import kotlinx.coroutines.delay
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun PokedexSplashScreen(onOpenPokemonList: () -> Unit) {
+fun PokedexSplashScreen(
+    onOpenPokemonList: () -> Unit,
+    viewModel: PokedexSplashViewModel = koinViewModel()
+) {
+    val state = viewModel.screenState.collectAsState().value
+
     LaunchedEffect(Unit) {
         delay(1200)
-        onOpenPokemonList()
+        viewModel.initialize()
     }
+
+    EpicSplashScreen()
+
+    when (state) {
+        is PokedexBaseState.NavigateToNextView ->
+            if (state.destination is OpenPokemonList) {
+                LaunchedEffect(state) {
+                    onOpenPokemonList()
+                }
+            }
+
+        else -> Unit
+    }
+}
+
+@Composable
+fun EpicSplashScreen() {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
