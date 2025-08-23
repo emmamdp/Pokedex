@@ -24,12 +24,18 @@ kotlin {
 }
 
 dependencies {
+    implementation(projects.core.navigation)
+
     implementation(libs.coroutines.core)
     implementation(libs.koin.core)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
 
     testImplementation(libs.junit)
 }
