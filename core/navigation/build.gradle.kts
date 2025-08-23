@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.emdp.core.navigation"
     compileSdk = 36
-    defaultConfig { minSdk = 24 }
+    defaultConfig { minSdk = 26 }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.emdp.domain"
     compileSdk = 36
-    defaultConfig { minSdk = 24 }
+    defaultConfig { minSdk = 26 }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -23,6 +23,10 @@ kotlin {
 
 dependencies {
     implementation(libs.coroutines.core)
+    implementation(libs.koin.core)
 
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.coroutines.test)
 }

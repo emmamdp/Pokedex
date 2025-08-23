@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.emdp.core.di"
     compileSdk = 36
-    defaultConfig { minSdk = 24 }
+    defaultConfig { minSdk = 26 }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -25,6 +25,7 @@ kotlin {
 dependencies {
     implementation(projects.core.common)
     implementation(projects.data)
+    implementation(projects.domain)
     implementation(projects.features.splash)
     implementation(projects.features.pokemonList)
     implementation(projects.features.pokemonDetail)

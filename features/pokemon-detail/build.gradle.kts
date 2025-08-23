@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.emdp.features.pokemon_detail"
     compileSdk = 36
-    defaultConfig { minSdk = 24 }
+    defaultConfig { minSdk = 26 }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
