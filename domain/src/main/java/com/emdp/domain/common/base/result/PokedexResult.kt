@@ -1,4 +1,4 @@
-package com.emdp.domain.common.base
+package com.emdp.domain.common.base.result
 
 import com.emdp.domain.model.error.PokedexGenericError
 
