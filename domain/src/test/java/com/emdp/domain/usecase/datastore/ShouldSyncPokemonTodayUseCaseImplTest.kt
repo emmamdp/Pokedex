@@ -4,7 +4,7 @@ import com.emdp.domain.common.base.result.PokedexResult.Error
 import com.emdp.domain.common.base.result.PokedexResult.Success
 import com.emdp.domain.model.base.NoParams
 import com.emdp.domain.model.error.PokedexGenericError.NoConnection
-import com.emdp.domain.repository.PokedexRepository
+import com.emdp.domain.repository.SyncPokedexRepository
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -17,8 +17,9 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class ShouldSyncPokemonTodayUseCaseImplTest {
-    private var repository: PokedexRepository = mockk()
+internal class ShouldSyncPokemonTodayUseCaseImplTest {
+
+    private var repository: SyncPokedexRepository = mockk()
     private lateinit var useCase: ShouldSyncPokemonTodayUseCase
 
     @Before

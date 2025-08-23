@@ -26,20 +26,26 @@ dependencies {
     implementation(projects.domain)
     implementation(projects.core.common)
 
+    implementation(libs.coroutines.core)
+    implementation(libs.koin.core)
+
+    implementation(libs.androidx.datastore.preferences)
+
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
+
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     implementation(libs.room.paging)
     ksp(libs.room.compiler)
-    implementation(libs.coroutines.core)
-    implementation(libs.koin.core)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockwebserver)
     testImplementation(libs.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlin.test.junit)
 }

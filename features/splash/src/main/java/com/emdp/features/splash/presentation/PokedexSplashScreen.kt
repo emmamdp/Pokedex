@@ -40,15 +40,15 @@ fun PokedexSplashScreen(
         viewModel.initialize()
     }
 
-    EpicSplashScreen()
-
     when (state) {
-        is PokedexBaseState.NavigateToNextView ->
+        is PokedexBaseState.Loading -> EpicSplashScreen()
+        is PokedexBaseState.NavigateToNextView -> {
             if (state.destination is OpenPokemonList) {
                 LaunchedEffect(state) {
                     onOpenPokemonList()
                 }
             }
+        }
 
         else -> Unit
     }
@@ -56,9 +56,7 @@ fun PokedexSplashScreen(
 
 @Composable
 fun EpicSplashScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.pokemon_splash_epic),
             contentDescription = null,
