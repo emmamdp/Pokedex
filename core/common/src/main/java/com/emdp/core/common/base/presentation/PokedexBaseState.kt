@@ -1,4 +1,4 @@
-package com.emdp.core.common.base
+package com.emdp.core.common.base.presentation
 
 import com.emdp.core.navigation.PokedexDestination
 
