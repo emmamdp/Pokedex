@@ -7,7 +7,9 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
+import androidx.room.Room
 import com.emdp.data.repository.SyncPokedexRepositoryImpl
+import com.emdp.data.source.local.database.PokedexDatabase
 import com.emdp.data.source.local.datastore.SyncLocalDataSource
 import com.emdp.data.source.local.datastore.SyncLocalDataSourceImpl
 import com.emdp.data.source.remote.PokeApiService
@@ -43,6 +45,31 @@ val pokedexDataStoreDiModule = module {
             produceFile = { get<Context>().preferencesDataStoreFile(DATASTORE_NAME) }
         )
     }
+}
+
+val pokedexRoomModule = module {
+    single(named("dbName")) { "pokedex.db" }
+
+    // DB
+    single {
+        val ctx: Context = get()
+        val dbName: String = get(named("dbName"))
+        val isDebug: Boolean = get(named("isDebug"))
+        val wipe: Boolean = get(named("wipeDbOnDebug"))
+
+        if (isDebug && wipe) ctx.deleteDatabase(dbName)
+
+        Room.databaseBuilder(ctx, PokedexDatabase::class.java, dbName)
+            .build()
+    }
+
+    // DAO
+    single { get<PokedexDatabase>().pokemonListDao() }
+}
+
+val devTogglesModule = module {
+    // Poner a true SOLO cuando se quiera resetear la BBDD en el proximo arranque
+    single(named("wipeDbOnDebug")) { false }
 }
 
 val pokedexNetworkModule = module {
