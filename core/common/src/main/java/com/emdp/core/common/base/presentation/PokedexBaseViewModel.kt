@@ -21,9 +21,9 @@ abstract class PokedexBaseViewModel<S> : ViewModel() {
     }
 
     protected fun setError(message: String? = null) {
-        val errorState = PokedexBaseState.Error(message)
-        _screenState.value = errorState
-        lastStableState = errorState
+        val showScreenErrorState = PokedexBaseState.ShowScreenError(message)
+        _screenState.value = showScreenErrorState
+        lastStableState = showScreenErrorState
     }
 
     protected fun setContent(data: S) {

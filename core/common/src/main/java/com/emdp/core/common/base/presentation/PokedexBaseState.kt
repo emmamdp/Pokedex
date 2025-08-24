@@ -9,7 +9,7 @@ sealed interface PokedexBaseState<out T> {
         val data: T
     ) : PokedexBaseState<T>
 
-    data class Error(
+    data class ShowScreenError(
         val errorType: String? = null
     ) : PokedexBaseState<Nothing>
 

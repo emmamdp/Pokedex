@@ -1,8 +1,8 @@
 package com.emdp.data.repository
 
 import com.emdp.data.source.local.datastore.SyncLocalDataSource
-import com.emdp.domain.common.base.result.PokedexResult.Error
-import com.emdp.domain.common.base.result.PokedexResult.Success
+import com.emdp.domain.common.base.result.PokedexResult.PkError
+import com.emdp.domain.common.base.result.PokedexResult.PkSuccess
 import com.emdp.domain.model.error.PokedexGenericError.NoConnection
 import com.emdp.domain.model.error.PokedexGenericError.UnknownError
 import io.mockk.clearAllMocks
@@ -40,8 +40,8 @@ internal class SyncPokedexRepositoryImplTest {
 
         val result = repo.getLastSyncDate()
 
-        val success = assertIs<Success<LocalDate?>>(result)
-        assertNull(success.pkData)
+        val pkSuccess = assertIs<PkSuccess<LocalDate?>>(result)
+        assertNull(pkSuccess.pkData)
     }
 
     @Test
@@ -51,8 +51,8 @@ internal class SyncPokedexRepositoryImplTest {
 
         val result = repo.getLastSyncDate()
 
-        val success = assertIs<Success<LocalDate?>>(result)
-        assertEquals(today, success.pkData)
+        val pkSuccess = assertIs<PkSuccess<LocalDate?>>(result)
+        assertEquals(today, pkSuccess.pkData)
     }
 
     @Test
@@ -61,8 +61,8 @@ internal class SyncPokedexRepositoryImplTest {
 
         val result = repo.getLastSyncDate()
 
-        val error = assertIs<Error>(result)
-        assertEquals(NoConnection, error.pkError)
+        val pkError = assertIs<PkError>(result)
+        assertEquals(NoConnection, pkError.pkError)
     }
 
     @Test
@@ -71,8 +71,8 @@ internal class SyncPokedexRepositoryImplTest {
 
         val result = repo.getLastSyncDate()
 
-        val error = assertIs<Error>(result)
-        assertTrue(error.pkError is UnknownError)
+        val pkError = assertIs<PkError>(result)
+        assertTrue(pkError.pkError is UnknownError)
     }
 
     @Test
@@ -82,7 +82,7 @@ internal class SyncPokedexRepositoryImplTest {
 
         val result = repo.setLastSyncDate(date)
 
-        assertIs<Success<Unit>>(result)
+        assertIs<PkSuccess<Unit>>(result)
     }
 
     @Test
@@ -92,7 +92,7 @@ internal class SyncPokedexRepositoryImplTest {
 
         val result = repo.setLastSyncDate(date)
 
-        val error = assertIs<Error>(result)
-        assertTrue(error.pkError is UnknownError)
+        val pkError = assertIs<PkError>(result)
+        assertTrue(pkError.pkError is UnknownError)
     }
 }

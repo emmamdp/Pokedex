@@ -14,6 +14,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    testOptions {
+        unitTests.all {
+            it.jvmArgs("-XX:+EnableDynamicAgentLoading")
+        }
+    }
 }
 
 kotlin {
@@ -26,8 +31,8 @@ dependencies {
     implementation(projects.domain)
     implementation(projects.core.common)
 
-    implementation(libs.coroutines.core)
     implementation(libs.koin.core)
+    implementation(libs.koin.android)
 
     implementation(libs.androidx.datastore.preferences)
 
@@ -43,7 +48,6 @@ dependencies {
     implementation(libs.room.paging)
     ksp(libs.room.compiler)
 
-    testImplementation(libs.junit)
     testImplementation(libs.mockwebserver)
     testImplementation(libs.coroutines.test)
     testImplementation(libs.mockk)

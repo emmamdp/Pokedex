@@ -1,7 +1,7 @@
 package com.emdp.domain.usecase.datastore
 
-import com.emdp.domain.common.base.result.PokedexResult.Error
-import com.emdp.domain.common.base.result.PokedexResult.Success
+import com.emdp.domain.common.base.result.PokedexResult.PkError
+import com.emdp.domain.common.base.result.PokedexResult.PkSuccess
 import com.emdp.domain.model.base.NoParams
 import com.emdp.domain.model.error.PokedexGenericError.NoConnection
 import com.emdp.domain.repository.SyncPokedexRepository
@@ -34,43 +34,43 @@ internal class ShouldSyncPokemonTodayUseCaseImplTest {
 
     @Test
     fun `returns true when last sync is null`() = runTest {
-        coEvery { repository.getLastSyncDate() } returns Success(null)
+        coEvery { repository.getLastSyncDate() } returns PkSuccess(null)
 
         val result = useCase(NoParams)
 
-        if (result is Success)
+        if (result is PkSuccess)
             assertTrue(result.pkData)
     }
 
     @Test
     fun `returns false when last sync is today`() = runTest {
         val today = LocalDate.now()
-        coEvery { repository.getLastSyncDate() } returns Success(today)
+        coEvery { repository.getLastSyncDate() } returns PkSuccess(today)
 
         val result = useCase(NoParams)
 
-        if (result is Success)
+        if (result is PkSuccess)
             assertFalse(result.pkData)
     }
 
     @Test
     fun `returns true when last sync is before today`() = runTest {
         val yesterday = LocalDate.now().minusDays(1)
-        coEvery { repository.getLastSyncDate() } returns Success(yesterday)
+        coEvery { repository.getLastSyncDate() } returns PkSuccess(yesterday)
 
         val result = useCase.invoke(NoParams)
 
-        if (result is Success)
+        if (result is PkSuccess)
             assertTrue(result.pkData)
     }
 
     @Test
     fun `propagates error from repository`() = runTest {
-        coEvery { repository.getLastSyncDate() } returns Error(NoConnection)
+        coEvery { repository.getLastSyncDate() } returns PkError(NoConnection)
 
         val result = useCase.invoke(NoParams)
 
-        if (result is Error)
+        if (result is PkError)
             assertEquals(NoConnection, result.pkError)
     }
 }

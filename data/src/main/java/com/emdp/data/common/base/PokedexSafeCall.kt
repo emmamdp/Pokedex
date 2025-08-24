@@ -4,7 +4,7 @@ import com.emdp.domain.common.base.result.PokedexResult
 
 suspend inline fun <T> safeCall(crossinline block: suspend () -> T): PokedexResult<T> =
     try {
-        PokedexResult.Success(block())
+        PokedexResult.PkSuccess(block())
     } catch (t: Throwable) {
-        PokedexResult.Error(PokedexExceptionMapper.toPokedexGenericError(t))
+        PokedexResult.PkError(PokedexExceptionMapper.toPokedexGenericError(t))
     }
