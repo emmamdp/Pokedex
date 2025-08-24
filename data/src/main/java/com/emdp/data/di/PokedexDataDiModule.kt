@@ -12,7 +12,11 @@ import com.emdp.data.repository.SyncPokedexRepositoryImpl
 import com.emdp.data.source.local.database.PokedexDatabase
 import com.emdp.data.source.local.datastore.SyncLocalDataSource
 import com.emdp.data.source.local.datastore.SyncLocalDataSourceImpl
-import com.emdp.data.source.remote.PokeApiService
+import com.emdp.data.source.remote.PokemonRemoteDataSource
+import com.emdp.data.source.remote.PokemonRemoteDataSourceImpl
+import com.emdp.data.source.remote.api.PokeApiService
+import com.emdp.data.source.remote.mapper.PokemonRemoteMapper
+import com.emdp.data.source.remote.mapper.PokemonRemoteMapperImpl
 import com.emdp.domain.repository.SyncPokedexRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -36,6 +40,9 @@ private const val DEFAULT_POKE_API_BASE_URL = "https://pokeapi.co/api/v2/"
 val pokedexDataDiModule = module {
     singleOf(::SyncPokedexRepositoryImpl) { bind<SyncPokedexRepository>() }
     singleOf(::SyncLocalDataSourceImpl) { bind<SyncLocalDataSource>() }
+
+    singleOf(::PokemonRemoteMapperImpl) { bind<PokemonRemoteMapper>() }
+    singleOf(::PokemonRemoteDataSourceImpl) { bind<PokemonRemoteDataSource>() }
 }
 
 val pokedexDataStoreDiModule = module {
