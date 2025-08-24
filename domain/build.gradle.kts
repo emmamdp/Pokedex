@@ -29,8 +29,11 @@ kotlin {
 dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.android)
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
 
     testImplementation(libs.mockk)
     testImplementation(libs.kotlin.test.junit)
     testImplementation(libs.coroutines.test)
+    testImplementation(libs.androidx.paging.testing)
 }

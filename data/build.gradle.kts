@@ -35,6 +35,9 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.android)
 
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
+
     implementation(libs.androidx.datastore.preferences)
 
     implementation(libs.retrofit)
@@ -56,4 +59,5 @@ dependencies {
     testImplementation(libs.koin.test)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.paging.testing)
 }

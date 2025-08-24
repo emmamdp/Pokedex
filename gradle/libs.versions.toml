@@ -35,6 +35,9 @@ coil = "2.7.0"
 # Testing
 mockk = "1.14.5"
 
+# Paging
+paging = "3.3.6"
+
 [libraries]
 # AndroidX base
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -85,7 +88,13 @@ mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", versio
 kotlin-test-junit = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version.ref = "kotlin" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 androidx-test-core = { module = "androidx.test:core", version = "1.7.0" }
-robolectric       = { module = "org.robolectric:robolectric", version = "4.15.1" }
+robolectric = { module = "org.robolectric:robolectric", version = "4.15.1" }
+
+# Paging
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
+androidx-paging-common  = { module = "androidx.paging:paging-common",  version.ref = "paging" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
+androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "paging" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
