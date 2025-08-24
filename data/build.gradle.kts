@@ -15,6 +15,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     testOptions {
+        unitTests.isIncludeAndroidResources = true
         unitTests.all {
             it.jvmArgs("-XX:+EnableDynamicAgentLoading")
         }
@@ -48,8 +49,11 @@ dependencies {
     implementation(libs.room.paging)
     ksp(libs.room.compiler)
 
+    testImplementation(libs.kotlin.test.junit)
     testImplementation(libs.mockwebserver)
     testImplementation(libs.coroutines.test)
     testImplementation(libs.mockk)
-    testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.koin.test)
+    testImplementation(libs.androidx.test.core)
+    testImplementation(libs.robolectric)
 }
