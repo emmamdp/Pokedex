@@ -11,6 +11,10 @@ import androidx.room.Room
 import com.emdp.data.repository.PokedexRepositoryImpl
 import com.emdp.data.repository.SyncPokedexRepositoryImpl
 import com.emdp.data.source.local.database.PokedexDatabase
+import com.emdp.data.source.local.database.PokemonLocalDataSource
+import com.emdp.data.source.local.database.PokemonLocalDataSourceImpl
+import com.emdp.data.source.local.database.mapper.PokemonLocalMapper
+import com.emdp.data.source.local.database.mapper.PokemonLocalMapperImpl
 import com.emdp.data.source.local.datastore.SyncLocalDataSource
 import com.emdp.data.source.local.datastore.SyncLocalDataSourceImpl
 import com.emdp.data.source.remote.PokemonRemoteDataSource
@@ -44,8 +48,12 @@ val pokedexDataDiModule = module {
     singleOf(::SyncLocalDataSourceImpl) { bind<SyncLocalDataSource>() }
 
     singleOf(::PokedexRepositoryImpl) { bind<PokedexRepository>() }
+
     singleOf(::PokemonRemoteMapperImpl) { bind<PokemonRemoteMapper>() }
     singleOf(::PokemonRemoteDataSourceImpl) { bind<PokemonRemoteDataSource>() }
+
+    singleOf(::PokemonLocalMapperImpl) { bind<PokemonLocalMapper>() }
+    singleOf(::PokemonLocalDataSourceImpl) { bind<PokemonLocalDataSource>() }
 }
 
 val pokedexDataStoreDiModule = module {

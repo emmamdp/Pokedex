@@ -1,5 +1,7 @@
 package com.emdp.data.repository
 
+import android.database.SQLException
+import com.emdp.data.source.local.database.PokemonLocalDataSource
 import com.emdp.data.source.remote.PokemonRemoteDataSource
 import com.emdp.domain.common.base.result.PokedexResult.PkError
 import com.emdp.domain.common.base.result.PokedexResult.PkSuccess
@@ -20,36 +22,60 @@ internal class PokedexRepositoryImplTest {
 
     private lateinit var repository: PokedexRepositoryImpl
 
-    private val dataSource: PokemonRemoteDataSource = mockk()
+    private val remote: PokemonRemoteDataSource = mockk()
+    private val local: PokemonLocalDataSource = mockk()
 
     @Before
     fun setUp() {
-        repository = PokedexRepositoryImpl(dataSource)
+        repository = PokedexRepositoryImpl(remote, local)
     }
 
     @Test
-    fun `syncPokemonList returns Success when dataSource succeeds`() = runTest {
-        coEvery { dataSource.getAllPokemon() } returns PkSuccess(
-            listOf(PokemonListModel(1, "bulbasaur"))
-        )
-
-        val result = repository.syncPokemonList()
-
-        assertTrue(result is PkSuccess)
-        assertEquals(Unit, (result as PkSuccess).pkData)
-        coVerify(exactly = 1) { dataSource.getAllPokemon() }
-        confirmVerified(dataSource)
-    }
-
-    @Test
-    fun `syncPokemonList still returns Success when dataSource fails (temporary behavior)`() =
+    fun `syncPokemonList returns Success and writes to local`() =
         runTest {
-            coEvery { dataSource.getAllPokemon() } returns PkError(pkError = mockk(relaxed = true))
+            coEvery { remote.getAllPokemon() } returns PkSuccess(POKEMON_LIST)
+            coEvery { local.insertAll(POKEMON_LIST) } returns Unit
 
             val result = repository.syncPokemonList()
 
             assertTrue(result is PkSuccess)
-            coVerify(exactly = 1) { dataSource.getAllPokemon() }
-            confirmVerified(dataSource)
+            assertEquals(Unit, (result as PkSuccess).pkData)
+            coVerify(exactly = 1) { remote.getAllPokemon() }
+            coVerify(exactly = 1) { local.insertAll(POKEMON_LIST) }
+            confirmVerified(remote, local)
         }
+
+    @Test
+    fun `syncPokemonList returns Error when remote fails and does not touch local`() =
+        runTest {
+            coEvery { remote.getAllPokemon() } returns PkError(pkError = mockk(relaxed = true))
+
+            val result = repository.syncPokemonList()
+
+            assertTrue(result is PkError)
+            coVerify(exactly = 1) { remote.getAllPokemon() }
+            coVerify(exactly = 0) { local.insertAll(any()) }
+            confirmVerified(remote, local)
+        }
+
+    @Test
+    fun `syncPokemonList returns Error when local insert fails (safeCall maps it)`() =
+        runTest {
+            coEvery { remote.getAllPokemon() } returns PkSuccess(POKEMON_LIST)
+            coEvery { local.insertAll(POKEMON_LIST) } throws SQLException("db boom")
+
+            val result = repository.syncPokemonList()
+
+            assertTrue(result is PkError)
+            coVerify(exactly = 1) { remote.getAllPokemon() }
+            coVerify(exactly = 1) { local.insertAll(POKEMON_LIST) }
+            confirmVerified(remote, local)
+        }
+
+    private companion object {
+        val POKEMON_LIST = listOf(
+            PokemonListModel(id = 1, name = "bulbasaur"),
+            PokemonListModel(id = 2, name = "ivysaur")
+        )
+    }
 }
