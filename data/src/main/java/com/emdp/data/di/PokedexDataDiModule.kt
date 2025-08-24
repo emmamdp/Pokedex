@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
+import com.emdp.data.repository.PokedexRepositoryImpl
 import com.emdp.data.repository.SyncPokedexRepositoryImpl
 import com.emdp.data.source.local.database.PokedexDatabase
 import com.emdp.data.source.local.datastore.SyncLocalDataSource
@@ -17,6 +18,7 @@ import com.emdp.data.source.remote.PokemonRemoteDataSourceImpl
 import com.emdp.data.source.remote.api.PokeApiService
 import com.emdp.data.source.remote.mapper.PokemonRemoteMapper
 import com.emdp.data.source.remote.mapper.PokemonRemoteMapperImpl
+import com.emdp.domain.repository.PokedexRepository
 import com.emdp.domain.repository.SyncPokedexRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -41,6 +43,7 @@ val pokedexDataDiModule = module {
     singleOf(::SyncPokedexRepositoryImpl) { bind<SyncPokedexRepository>() }
     singleOf(::SyncLocalDataSourceImpl) { bind<SyncLocalDataSource>() }
 
+    singleOf(::PokedexRepositoryImpl) { bind<PokedexRepository>() }
     singleOf(::PokemonRemoteMapperImpl) { bind<PokemonRemoteMapper>() }
     singleOf(::PokemonRemoteDataSourceImpl) { bind<PokemonRemoteDataSource>() }
 }
