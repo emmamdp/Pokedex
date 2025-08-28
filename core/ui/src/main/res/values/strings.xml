@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="splash_loading">Cargando…</string>
+
+    <string name="pokedex_search_bar_placeholder">Busca Pokémon…</string>
+
+    <string name="pokedex_favorite_button_selected">Favorito</string>
+    <string name="pokedex_favorite_button_activated">Activado</string>
+    <string name="pokedex_favorite_button_desactivated">Desactivado</string>
+</resources>

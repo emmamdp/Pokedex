@@ -21,10 +21,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.emdp.core.common.base.presentation.PokedexBaseState
 import com.emdp.core.navigation.PokedexDestination.OpenPokemonList
+import com.emdp.core.ui.R
 import com.emdp.core.ui.components.progressbar.OrbitingSparkProgress
 import com.emdp.core.ui.textstyle.brand.BrandTitle
 import com.emdp.core.ui.textstyle.brand.BrandTitleSize
-import com.emdp.features.splash.R
 import kotlinx.coroutines.delay
 import org.koin.compose.viewmodel.koinViewModel
 

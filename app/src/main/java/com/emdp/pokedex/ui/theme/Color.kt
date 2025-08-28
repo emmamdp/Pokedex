@@ -2,7 +2,7 @@ package com.emdp.pokedex.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val PkPrimary = Color(0xFFEF5350)
+val PkPrimary = Color(0xFFC62828)
 val PkOnPrimary = Color.White
 
 val PkSecondary = Color(0xFF42A5F5)

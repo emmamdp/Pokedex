@@ -38,10 +38,14 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
     implementation(libs.coil.compose)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
 
+    testImplementation(libs.kotlin.test.junit)
     testImplementation(libs.coroutines.test)
     testImplementation(libs.mockk)
+    testImplementation(libs.androidx.paging.testing)
 }
