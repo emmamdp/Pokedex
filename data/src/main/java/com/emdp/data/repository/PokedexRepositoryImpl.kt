@@ -9,6 +9,7 @@ import com.emdp.data.source.remote.PokemonRemoteDataSource
 import com.emdp.domain.common.base.result.PokedexResult
 import com.emdp.domain.common.base.result.PokedexResult.PkError
 import com.emdp.domain.common.base.result.PokedexResult.PkSuccess
+import com.emdp.domain.model.PokemonDetailModel
 import com.emdp.domain.model.PokemonListModel
 import com.emdp.domain.repository.PokedexRepository
 import kotlinx.coroutines.flow.Flow
@@ -34,6 +35,9 @@ class PokedexRepositoryImpl(
             ),
             pagingSourceFactory = { local.pagingSource() }
         ).flow
+
+    override suspend fun getPokemonDetail(id: Int): PokedexResult<PokemonDetailModel> =
+        remote.getPokemonDetail(id)
 
     private suspend fun insertAllPokemonInDatabase(modelList: List<PokemonListModel>) =
         when (val insertResult = safeCall { local.insertAll(modelList) }) {

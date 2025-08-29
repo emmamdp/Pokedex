@@ -2,6 +2,8 @@ package com.emdp.domain.di
 
 import com.emdp.domain.usecase.datastore.ShouldSyncPokemonListUseCase
 import com.emdp.domain.usecase.datastore.ShouldSyncPokemonListUseCaseImpl
+import com.emdp.domain.usecase.pokemondetail.GetPokemonDetailUseCase
+import com.emdp.domain.usecase.pokemondetail.GetPokemonDetailUseCaseImpl
 import com.emdp.domain.usecase.pokemonlist.GetPokemonListUseCase
 import com.emdp.domain.usecase.pokemonlist.GetPokemonListUseCaseImpl
 import com.emdp.domain.usecase.pokemonlist.SyncPokemonListUseCase
@@ -14,4 +16,5 @@ val pokedexDomainDiModule = module {
     factoryOf(::ShouldSyncPokemonListUseCaseImpl) { bind<ShouldSyncPokemonListUseCase>() }
     factoryOf(::SyncPokemonListUseCaseImpl) { bind<SyncPokemonListUseCase>() }
     factoryOf(::GetPokemonListUseCaseImpl) { bind<GetPokemonListUseCase>() }
+    factoryOf(::GetPokemonDetailUseCaseImpl) { bind<GetPokemonDetailUseCase>() }
 }
