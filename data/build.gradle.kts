@@ -20,6 +20,9 @@ android {
             it.jvmArgs("-XX:+EnableDynamicAgentLoading")
         }
     }
+    kotlinOptions {
+        freeCompilerArgs += "-XXLanguage:+PropertyParamAnnotationDefaultTargetMode"
+    }
 }
 
 kotlin {

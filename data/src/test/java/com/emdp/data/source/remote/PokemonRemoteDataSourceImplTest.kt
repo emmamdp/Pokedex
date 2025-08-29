@@ -1,16 +1,21 @@
 package com.emdp.data.source.remote
 
 import com.emdp.data.source.remote.api.PokeApiService
+import com.emdp.data.source.remote.dtos.PokemonDetailResponseDto
+import com.emdp.data.source.remote.dtos.PokemonDetailResponseDtoMother
 import com.emdp.data.source.remote.dtos.PokemonListResponseDto
-import com.emdp.data.source.remote.dtos.PokemonListResultDto
+import com.emdp.data.source.remote.dtos.PokemonListResponseDtoMother
 import com.emdp.data.source.remote.mapper.PokemonRemoteMapper
 import com.emdp.domain.common.base.result.PokedexResult
 import com.emdp.domain.common.base.result.PokedexResult.PkSuccess
-import com.emdp.domain.model.PokemonListModel
+import com.emdp.domain.model.PokemonDetailModelMother
+import com.emdp.domain.model.PokemonListModelMother
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -33,15 +38,18 @@ internal class PokemonRemoteDataSourceImplTest {
     @Test
     fun `getAllPokemon returns Success and hits expected query params`() =
         runTest {
+            val pokemonListDto = PokemonListResponseDtoMother.mock()
+            val pokemonList = PokemonListModelMother.mock()
+
             coEvery { api.getPokemonList(offset = 0, limit = ALL_LIMIT) } returns pokemonListDto
-            coEvery { mapper.toModel(any()) } returns pokemonList
+            coEvery { mapper.toModel(any<PokemonListResponseDto>()) } returns pokemonList
 
             val result = dataSource.getAllPokemon()
 
             assertTrue(result is PkSuccess)
             val pokemonListResult = (result as PkSuccess).pkData
             assertEquals(pokemonList, pokemonListResult)
-            assertEquals(EXPECTED_COUNT, pokemonListResult.size)
+            assertEquals(pokemonList.size, pokemonListResult.size)
 
             coVerify(exactly = 1) { api.getPokemonList(offset = 0, limit = ALL_LIMIT) }
             coVerify(exactly = 1) { mapper.toModel(pokemonListDto) }
@@ -56,33 +64,39 @@ internal class PokemonRemoteDataSourceImplTest {
 
         assertTrue(result is PokedexResult.PkError)
         coVerify(exactly = 1) { api.getPokemonList(offset = 0, limit = ALL_LIMIT) }
-        coVerify(exactly = 0) { mapper.toModel(any()) }
+        coVerify(exactly = 0) { mapper.toModel(any<PokemonListResponseDto>()) }
         confirmVerified(api, mapper)
+    }
+
+    @Test
+    fun `getPokemonDetail returns success when api and mapper succeed`() =
+        runTest {
+            val dto = PokemonDetailResponseDtoMother.mock()
+            val model = PokemonDetailModelMother.mock()
+
+            coEvery { api.getPokemonDetail(25) } returns dto
+            every { mapper.toModel(dto) } returns model
+
+            val result = dataSource.getPokemonDetail(25)
+
+            assertTrue(result is PkSuccess)
+            assertEquals(model, (result as PkSuccess).pkData)
+            coVerify(exactly = 1) { api.getPokemonDetail(25) }
+            verify(exactly = 1) { mapper.toModel(dto) }
+        }
+
+    @Test
+    fun `getPokemonDetail returns error when api throws`() = runTest {
+        coEvery { api.getPokemonDetail(99999) } throws IOException("network boom")
+
+        val result = dataSource.getPokemonDetail(99999)
+
+        assertTrue(result is PokedexResult.PkError)
+        coVerify(exactly = 1) { api.getPokemonDetail(99999) }
+        verify(exactly = 0) { mapper.toModel(any<PokemonDetailResponseDto>()) }
     }
 
     private companion object {
         const val ALL_LIMIT = 100_000
-        const val EXPECTED_COUNT = 2
-
-        val pokemonListDto = PokemonListResponseDto(
-            count = EXPECTED_COUNT,
-            next = null,
-            previous = null,
-            results = listOf(
-                PokemonListResultDto(
-                    name = "bulbasaur",
-                    url = "https://pokeapi.co/api/v2/pokemon/1/"
-                ),
-                PokemonListResultDto(
-                    name = "ivysaur",
-                    url = "https://pokeapi.co/api/v2/pokemon/2"
-                )
-            )
-        )
-
-        val pokemonList = listOf(
-            PokemonListModel(id = 1, name = "bulbasaur"),
-            PokemonListModel(id = 2, name = "ivysaur")
-        )
     }
 }

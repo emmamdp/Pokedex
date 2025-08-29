@@ -1,9 +1,13 @@
 package com.emdp.data.source.remote.mapper
 
-import com.emdp.data.source.remote.dtos.PokemonListResponseDto
-import com.emdp.data.source.remote.dtos.PokemonListResultDto
+import com.emdp.data.source.remote.dtos.PokemonDetailResponseDtoMother
+import com.emdp.data.source.remote.dtos.PokemonListResponseDtoMother
+import com.emdp.domain.model.PokemonDetailModelMother
 import com.emdp.domain.model.PokemonListModel
+import com.emdp.domain.model.PokemonListModelMother
+import com.emdp.domain.model.types.PokemonType
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
@@ -12,72 +16,65 @@ internal class PokemonRemoteMapperImplTest {
     private val mapper = PokemonRemoteMapperImpl()
 
     @Test
-    fun `maps list correctly with and without trailing slash`() {
-        val dto = PokemonListResponseDto(
-            count = COUNT_TWO,
-            next = null,
-            previous = null,
-            results = listOf(
-                PokemonListResultDto(name = NAME_1, url = URL_1_TRAILING_SLASH),
-                PokemonListResultDto(name = NAME_2, url = URL_2_NO_TRAILING_SLASH)
-            )
-        )
+    fun `toModel pokemon list maps list correctly with and without trailing slash`() {
+        val dto = PokemonListResponseDtoMother.mock()
 
-        val models = mapper.toModel(dto)
+        val models = mapper.toModel(responseDto = dto)
 
-        assertEquals(
-            listOf(
-                PokemonListModel(id = ID_1, name = NAME_1),
-                PokemonListModel(id = ID_2, name = NAME_2)
-            ),
-            models
-        )
+        assertEquals(PokemonListModelMother.mock(), models)
     }
 
     @Test
-    fun `returns empty list when results is empty`() {
-        val dto = PokemonListResponseDto(
-            count = COUNT_ZERO,
-            next = null,
-            previous = null,
-            results = emptyList()
-        )
+    fun `toModel pokemon list returns empty list when results is empty`() {
+        val dto = PokemonListResponseDtoMother.mockEmptyResult()
 
-        val models = mapper.toModel(dto)
+        val models = mapper.toModel(responseDto = dto)
 
         assertEquals(emptyList<PokemonListModel>(), models)
     }
 
     @Test
-    fun `throws when url does not match id pattern`() {
-        val dto = PokemonListResponseDto(
-            count = COUNT_ONE,
-            next = null,
-            previous = null,
-            results = listOf(
-                PokemonListResultDto(name = NAME_BAD, url = BAD_URL)
-            )
-        )
+    fun `toModel pokemon list throws when url does not match id pattern`() {
+        val dto = PokemonListResponseDtoMother.mockWithInvalidPattern()
 
         assertThrows(IllegalStateException::class.java) {
             mapper.toModel(dto)
         }
     }
 
-    private companion object {
-        const val COUNT_ZERO = 0
-        const val COUNT_ONE = 1
-        const val COUNT_TWO = 2
+    @Test
+    fun `toModel pokemon detail capitalizes name, sorts types by slot, and maps stats`() {
+        val dto = PokemonDetailResponseDtoMother.mock()
 
-        const val NAME_1 = "bulbasaur"
-        const val NAME_2 = "ivysaur"
-        const val NAME_BAD = "whoops"
+        val model = mapper.toModel(dto)
 
-        const val ID_1 = 1
-        const val ID_2 = 2
+        with(PokemonDetailModelMother.mock()) {
+            assertEquals(id, model.id)
+            assertEquals(name, model.name)
+            assertEquals(types, model.types)
+            assertEquals(imageUrl, model.imageUrl)
+            assertEquals(stats.size, model.stats.size)
+            stats.forEachIndexed { index, statModel ->
+                assertEquals(statModel.name, model.stats[index].name)
+                assertEquals(statModel.base, model.stats[index].base)
+            }
+            assertEquals(7, model.height)
+            assertEquals(69, model.weight)
+        }
+    }
 
-        const val URL_1_TRAILING_SLASH = "https://pokeapi.co/api/v2/pokemon/1/"
-        const val URL_2_NO_TRAILING_SLASH = "https://pokeapi.co/api/v2/pokemon/2"
-        const val BAD_URL = "https://pokeapi.co/api/v2/not-pokemon/xxx"
+    @Test
+    fun `toModel pokemon detail handles nulls and empty lists`() {
+        val dto = PokemonDetailResponseDtoMother.mockEmptyDetail()
+
+        val model = mapper.toModel(dto)
+
+        assertEquals(0, model.id)
+        assertEquals("", model.name)
+        assertNull(model.imageUrl)
+        assertEquals(emptyList<PokemonType>(), model.types)
+        assertEquals(0, model.stats.size)
+        assertNull(model.height)
+        assertNull(model.weight)
     }
 }
