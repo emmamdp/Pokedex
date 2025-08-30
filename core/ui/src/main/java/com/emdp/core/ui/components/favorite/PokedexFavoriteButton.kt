@@ -25,12 +25,13 @@ fun PokedexFavoriteButton(
     selected: Boolean,
     onToggle: () -> Unit,
     size: Dp = 48.dp,
-    iconSize: Dp = 32.dp
+    iconSize: Dp = 32.dp,
+    showBorderBlack: Boolean = false
 ) {
-    val icon = if (selected)
-        painterResource(R.drawable.favorite_selected)
+    val icon = if (showBorderBlack)
+        getFavoriteBlackIcon(selected)
     else
-        painterResource(R.drawable.favorite_unselected)
+        getFavoriteIcon(selected)
 
     val favoriteText = stringResource(R.string.pokedex_favorite_button_selected)
     val stateDescriptionText = stringResource(
@@ -58,3 +59,17 @@ fun PokedexFavoriteButton(
         )
     }
 }
+
+@Composable
+private fun getFavoriteIcon(selected: Boolean) =
+    if (selected)
+        painterResource(R.drawable.favorite_selected)
+    else
+        painterResource(R.drawable.favorite_unselected)
+
+@Composable
+private fun getFavoriteBlackIcon(selected: Boolean) =
+    if (selected)
+        painterResource(R.drawable.favorite_selected_black)
+    else
+        painterResource(R.drawable.favorite_unselected_black)

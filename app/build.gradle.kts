@@ -54,6 +54,7 @@ dependencies {
     implementation(projects.core.navigation)
     implementation(projects.features.splash)
     implementation(projects.features.pokemonList)
+    implementation(projects.features.pokemonDetail)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
@@ -64,4 +65,7 @@ dependencies {
 
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
+
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
 }

@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.emdp.core.navigation.PokedexRoutes
+import com.emdp.features.pokemon_detail.presentation.PokemonDetailScreen
 import com.emdp.features.pokemon_list.navigation.pokemonListScreen
 import com.emdp.features.splash.navigation.pokedexSplashScreen
 
@@ -22,21 +23,27 @@ fun PokedexAppNavHost() {
             }
         )
         pokemonListScreen(
-            onOpenDetail = { pokemonId ->
-                //nav.navigate(PokedexRoutes.PokemonDetail.build(pokemonId)) {
-                //    launchSingleTop = true
-                //}
+            onOpenDetail = { pokemonId: Int ->
+                nav.navigate(PokedexRoutes.PokemonDetail.build(pokemonId)) {
+                    launchSingleTop = true
+                }
             }
         )
+
         composable(
             route = PokedexRoutes.PokemonDetail.route,
             arguments = listOf(
-                navArgument(PokedexRoutes.PokemonDetail.arg) { type = NavType.StringType }
+                navArgument(PokedexRoutes.PokemonDetail.arg) { type = NavType.IntType }
             )
         ) { backStackEntry ->
-            val pokemonId =
-                backStackEntry.arguments?.getString(PokedexRoutes.PokemonDetail.arg).orEmpty()
-            // Detail Screen
+            val pokemonId = backStackEntry.arguments?.getInt(
+                PokedexRoutes.PokemonDetail.arg
+            ) ?: return@composable
+
+            PokemonDetailScreen(
+                id = pokemonId,
+                onBackClick = { nav.popBackStack() }
+            )
         }
     }
 }

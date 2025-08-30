@@ -7,6 +7,6 @@ object PokedexRoutes {
     object PokemonDetail {
         const val arg = "pokemonId"
         const val route = "pokemon/detail/{$arg}"
-        fun build(pokemonId: String) = "pokemon/detail/$pokemonId"
+        fun build(pokemonId: Int) = "pokemon/detail/$pokemonId"
     }
 }
