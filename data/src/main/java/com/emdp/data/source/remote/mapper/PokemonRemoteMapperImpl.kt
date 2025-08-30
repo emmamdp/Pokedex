@@ -2,6 +2,7 @@ package com.emdp.data.source.remote.mapper
 
 import com.emdp.data.source.remote.dtos.PokemonDetailResponseDto
 import com.emdp.data.source.remote.dtos.PokemonListResponseDto
+import com.emdp.data.source.remote.dtos.SpritesDto
 import com.emdp.domain.model.PokemonDetailModel
 import com.emdp.domain.model.PokemonListModel
 import com.emdp.domain.model.StatModel
@@ -29,15 +30,24 @@ class PokemonRemoteMapperImpl : PokemonRemoteMapper {
             ?.map { StatModel(name = it.stat.name, base = it.baseStat) }
             .orEmpty()
 
+        val imageUrl = getImageUrl(sprites = responseDto.sprites)
+
         return PokemonDetailModel(
             id = responseDto.id,
             name = responseDto.name.capitalizedName(),
-            imageUrl = responseDto.sprites?.frontDefault,
+            imageUrl = imageUrl,
             types = types,
             height = responseDto.height,
             weight = responseDto.weight,
             stats = baseAttributes
         )
+    }
+
+    private fun getImageUrl(sprites: SpritesDto?): String? {
+        val official = sprites?.other?.officialArtwork?.frontDefault
+        val dream = sprites?.other?.dreamWorld?.frontDefault
+        val front = sprites?.frontDefault
+        return official ?: dream ?: front
     }
 
     private fun extractIdFromUrl(url: String): Int {

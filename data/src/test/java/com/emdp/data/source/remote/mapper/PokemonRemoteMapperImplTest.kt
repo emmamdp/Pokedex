@@ -38,7 +38,7 @@ internal class PokemonRemoteMapperImplTest {
         val dto = PokemonListResponseDtoMother.mockWithInvalidPattern()
 
         assertThrows(IllegalStateException::class.java) {
-            mapper.toModel(dto)
+            mapper.toModel(responseDto = dto)
         }
     }
 
@@ -46,7 +46,7 @@ internal class PokemonRemoteMapperImplTest {
     fun `toModel pokemon detail capitalizes name, sorts types by slot, and maps stats`() {
         val dto = PokemonDetailResponseDtoMother.mock()
 
-        val model = mapper.toModel(dto)
+        val model = mapper.toModel(responseDto = dto)
 
         with(PokemonDetailModelMother.mock()) {
             assertEquals(id, model.id)
@@ -67,7 +67,7 @@ internal class PokemonRemoteMapperImplTest {
     fun `toModel pokemon detail handles nulls and empty lists`() {
         val dto = PokemonDetailResponseDtoMother.mockEmptyDetail()
 
-        val model = mapper.toModel(dto)
+        val model = mapper.toModel(responseDto = dto)
 
         assertEquals(0, model.id)
         assertEquals("", model.name)
@@ -76,5 +76,38 @@ internal class PokemonRemoteMapperImplTest {
         assertEquals(0, model.stats.size)
         assertNull(model.height)
         assertNull(model.weight)
+    }
+
+    @Test
+    fun `toModel pokemon detail prefers official artwork over dream and front`() {
+        val dto = PokemonDetailResponseDtoMother.mock()
+
+        val model = mapper.toModel(responseDto = dto)
+
+        assertEquals(IMAGE_URL_PNG, model.imageUrl)
+    }
+
+    @Test
+    fun `toModel pokemon detail falls back to dream world when official is null`() {
+        val dto = PokemonDetailResponseDtoMother.mockWithOfficialArtWorkNull()
+
+        val model = mapper.toModel(responseDto = dto)
+
+        assertEquals(IMAGE_URL_SVG, model.imageUrl)
+    }
+
+    @Test
+    fun `toModel pokemon detail falls back to front_default when other is null`() {
+        val dto = PokemonDetailResponseDtoMother.mockWithOtherNull()
+
+        val model = mapper.toModel(responseDto = dto)
+
+        assertEquals(IMAGE_URL_DEFAULT, model.imageUrl)
+    }
+
+    private companion object {
+        const val IMAGE_URL_PNG = "https://sprites/official_art.png"
+        const val IMAGE_URL_SVG = "https://sprites/dream_world.svg"
+        const val IMAGE_URL_DEFAULT = "https://img"
     }
 }

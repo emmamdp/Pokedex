@@ -7,7 +7,7 @@ internal object PokemonDetailModelMother {
     private val base = PokemonDetailModel(
         id = 1,
         name = "Bulbasaur",
-        imageUrl = "https://img",
+        imageUrl = "https://sprites/official_art.png",
         types = listOf(PokemonType.GRASS, PokemonType.POISON),
         height = 7,
         weight = 69,

@@ -23,4 +23,13 @@ internal object PokemonDetailResponseDtoMother {
         types = null,
         stats = null
     )
+
+    fun mockWithOfficialArtWorkNull() = base.copy(
+        sprites = SpritesDtoMother.mockWithOfficialArtWorkNull()
+    )
+
+    fun mockWithOtherNull() = base.copy(
+        sprites = SpritesDtoMother.mockOtherNull()
+    )
+
 }
