@@ -15,13 +15,9 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     testOptions {
-        unitTests.isIncludeAndroidResources = true
         unitTests.all {
             it.jvmArgs("-XX:+EnableDynamicAgentLoading")
         }
-    }
-    kotlinOptions {
-        freeCompilerArgs += "-XXLanguage:+PropertyParamAnnotationDefaultTargetMode"
     }
 }
 
@@ -56,11 +52,7 @@ dependencies {
     ksp(libs.room.compiler)
 
     testImplementation(libs.kotlin.test.junit)
-    testImplementation(libs.mockwebserver)
     testImplementation(libs.coroutines.test)
     testImplementation(libs.mockk)
-    testImplementation(libs.koin.test)
-    testImplementation(libs.androidx.test.core)
-    testImplementation(libs.robolectric)
     testImplementation(libs.androidx.paging.testing)
 }

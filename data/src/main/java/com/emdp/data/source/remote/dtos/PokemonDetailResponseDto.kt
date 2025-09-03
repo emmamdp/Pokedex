@@ -16,24 +16,24 @@ data class PokemonDetailResponseDto(
 
 @JsonClass(generateAdapter = true)
 data class SpritesDto(
-    @Json(name = "front_default") val frontDefault: String?,
+    @param:Json(name = "front_default") val frontDefault: String?,
     val other: OtherSpritesDto?
 )
 
 @JsonClass(generateAdapter = true)
 data class OtherSpritesDto(
-    @Json(name = "dream_world") val dreamWorld: DreamWorldDto?,
-    @Json(name = "official-artwork") val officialArtwork: OfficialArtworkDto?
+    @param:Json(name = "dream_world") val dreamWorld: DreamWorldDto?,
+    @param:Json(name = "official-artwork") val officialArtwork: OfficialArtworkDto?
 )
 
 @JsonClass(generateAdapter = true)
 data class DreamWorldDto(
-    @Json(name = "front_default") val frontDefault: String?
+    @param:Json(name = "front_default") val frontDefault: String?
 )
 
 @JsonClass(generateAdapter = true)
 data class OfficialArtworkDto(
-    @Json(name = "front_default") val frontDefault: String?
+    @param:Json(name = "front_default") val frontDefault: String?
 )
 
 @JsonClass(generateAdapter = true)
@@ -50,6 +50,6 @@ data class NamedResourceDto(
 
 @JsonClass(generateAdapter = true)
 data class StatDto(
-    @Json(name = "base_stat") val baseStat: Int,
+    @param:Json(name = "base_stat") val baseStat: Int,
     val stat: NamedResourceDto
 )

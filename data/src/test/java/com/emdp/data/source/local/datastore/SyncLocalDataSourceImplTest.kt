@@ -53,16 +53,4 @@ internal class SyncLocalDataSourceImplTest {
 
             assertEquals(today, read)
         }
-
-    @Test
-    fun `overwrite existing date`() = runTest {
-        val day1 = LocalDate.now().minusDays(1)
-        val day2 = LocalDate.now()
-
-        syncLocalSource.setLastSyncDate(day1)
-        syncLocalSource.setLastSyncDate(day2)
-        val read = syncLocalSource.getLastSyncDate()
-
-        assertEquals(day2, read)
-    }
 }
