@@ -7,4 +7,20 @@
     <string name="pokedex_favorite_button_selected">Favorito</string>
     <string name="pokedex_favorite_button_activated">Activado</string>
     <string name="pokedex_favorite_button_desactivated">Desactivado</string>
+
+    <string name="pokedex_home_title">Hazte con todos!</string>
+    <string name="pokedex_home_card_pokemons">Pokemons</string>
+    <string name="pokedex_home_card_favorites">Favoritos</string>
+    <string name="pokedex_home_card_types">Tipos</string>
+    <string name="pokedex_home_card_moves">Ataques</string>
+
+    <string name="pokedex_pokemon_list_pokemons">Pokemons</string>
+
+    <string name="pokedex_pokemon_detail_pokemon">Pokemon</string>
+    <string name="pokedex_pokemon_detail_load_error">No se ha podido cargar el Pokemon.</string>
+    <string name="pokedex_pokemon_detail_retry">Reintentar</string>
+    <string name="pokedex_pokemon_detail_weight">Peso</string>
+    <string name="pokedex_pokemon_detail_height">Altura</string>
+    <string name="pokedex_pokemon_detail_base_stats">Atributos básicos</string>
+
 </resources>

@@ -1,7 +1,6 @@
 package com.emdp.features.pokemon_detail.presentation
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -45,13 +43,10 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -59,10 +54,12 @@ import coil.compose.AsyncImage
 import com.emdp.core.common.base.presentation.PokedexBaseState
 import com.emdp.core.ui.R
 import com.emdp.core.ui.components.apptopbar.PokedexAppTopBar
+import com.emdp.core.ui.components.background.BackgroundPokeball
 import com.emdp.core.ui.components.chip.PokedexTypeChips
 import com.emdp.core.ui.components.pill.PokedexInfoPill
 import com.emdp.core.ui.components.progressbar.OrbitingSparkProgress
 import com.emdp.core.ui.formats.UiFormatters
+import com.emdp.core.ui.theme.PkOnPrimaryWhite
 import com.emdp.core.ui.theme.PokemonTypeChipColor
 import com.emdp.core.ui.theme.PokemonTypeColor
 import com.emdp.core.ui.theme.ProgressBarColor
@@ -97,7 +94,7 @@ fun PokemonDetailScreen(
                 PokedexAppTopBar(
                     titleText = when (val state = baseState) {
                         is PokedexBaseState.Content -> state.data.name
-                        else -> "Pokémon"
+                        else -> stringResource(R.string.pokedex_pokemon_detail_pokemon)
                     },
                     textColor = onColor,
                     onBackClick = onBackClick,
@@ -125,14 +122,17 @@ fun PokemonDetailScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Could not load this Pokémon.", color = onColor)
+                            Text(
+                                text = stringResource(R.string.pokedex_pokemon_detail_load_error),
+                                color = onColor
+                            )
                             Spacer(Modifier.height(8.dp))
                             OutlinedButton(
                                 onClick = { viewModel.retry() },
                                 colors = ButtonDefaults.outlinedButtonColors(contentColor = onColor),
                                 border = BorderStroke(1.dp, onColor)
                             ) {
-                                Text("Retry")
+                                Text(text = stringResource(R.string.pokedex_pokemon_detail_retry))
                             }
                         }
                     }
@@ -163,7 +163,7 @@ private fun DetailContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(paddingValues = padding),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
@@ -219,7 +219,6 @@ private fun DetailContent(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 stats = model.stats,
                 onColor = onColor
-
             )
         }
     }
@@ -250,7 +249,9 @@ private fun PokemonImage(
         PokemonHalo(pokemonType = model.types)
         BackgroundPokeball(
             modifier = Modifier.matchParentSize(),
-            backgroundColor = backgroundColor
+            contentAlignment = Alignment.CenterEnd,
+            backgroundColor = backgroundColor,
+            size = 80.dp
         )
         PokemonAsyncImage(
             imageUrl = model.imageUrl,
@@ -297,12 +298,12 @@ private fun PokemonPills(weight: Int?, height: Int?, onColor: Color) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         PokedexInfoPill(
-            label = "Peso",
+            label = stringResource(R.string.pokedex_pokemon_detail_weight),
             value = UiFormatters.formatWeightToKg(weight),
             onColor = onColor
         )
         PokedexInfoPill(
-            label = "Altura",
+            label = stringResource(R.string.pokedex_pokemon_detail_height),
             value = UiFormatters.formatHeightToM(height),
             onColor = onColor
         )
@@ -312,7 +313,7 @@ private fun PokemonPills(weight: Int?, height: Int?, onColor: Color) {
 @Composable
 private fun PokemonBaseStats(modifier: Modifier, stats: List<StatModel>, onColor: Color) {
     Text(
-        "Base Stats",
+        text = stringResource(R.string.pokedex_pokemon_detail_base_stats),
         style = MaterialTheme.typography.titleMedium,
         color = onColor,
         modifier = modifier
@@ -321,7 +322,7 @@ private fun PokemonBaseStats(modifier: Modifier, stats: List<StatModel>, onColor
     OutlinedCard(
         border = BorderStroke(1.dp, onColor),
         colors = CardDefaults.outlinedCardColors(
-            containerColor = Color.White.copy(alpha = 0.10f)
+            containerColor = PkOnPrimaryWhite.copy(alpha = 0.10f)
         ),
         modifier = Modifier
             .fillMaxWidth()
@@ -378,37 +379,6 @@ private fun PokemonHalo(pokemonType: List<PokemonType>) {
             )
             .blur(36.dp)
     )
-}
-
-@Composable
-private fun BackgroundPokeball(
-    modifier: Modifier,
-    backgroundColor: Color
-) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.CenterEnd
-    ) {
-        val bgLum = backgroundColor.luminance()
-        val tintAlpha = (0.06f + bgLum * 0.10f)
-
-        Image(
-            painter = painterResource(id = R.drawable.ic_pokeball),
-            contentDescription = null,
-            colorFilter = ColorFilter.tint(Color.White.copy(alpha = tintAlpha)),
-            modifier = Modifier
-                .fillMaxHeight()
-                .aspectRatio(1f, matchHeightConstraintsFirst = true)
-                .graphicsLayer {
-                    clip = false
-                    scaleX = 1.5f
-                    scaleY = 1.5f
-                    rotationZ = -30f
-                }
-                .offset(x = 72.dp),
-            contentScale = ContentScale.Fit
-        )
-    }
 }
 
 @Composable

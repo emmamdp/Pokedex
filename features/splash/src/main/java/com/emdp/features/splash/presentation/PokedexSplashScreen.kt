@@ -30,7 +30,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun PokedexSplashScreen(
-    onOpenPokemonList: () -> Unit,
+    navigateToHomeScreen: () -> Unit,
     viewModel: PokedexSplashViewModel = koinViewModel()
 ) {
     val state = viewModel.screenState.collectAsState().value
@@ -44,9 +44,7 @@ fun PokedexSplashScreen(
         is PokedexBaseState.Loading -> EpicSplashScreen()
         is PokedexBaseState.NavigateToNextView -> {
             if (state.destination is OpenPokemonList) {
-                LaunchedEffect(state) {
-                    onOpenPokemonList()
-                }
+                LaunchedEffect(state) { navigateToHomeScreen() }
             }
         }
 

@@ -5,8 +5,8 @@ import androidx.navigation.compose.composable
 import com.emdp.core.navigation.PokedexRoutes
 import com.emdp.features.splash.presentation.PokedexSplashScreen
 
-fun NavGraphBuilder.pokedexSplashScreen(onOpenPokemonList: () -> Unit) {
+fun NavGraphBuilder.pokedexSplashScreen(navigateToHomeScreen: () -> Unit) {
     composable(PokedexRoutes.SplashRoute) {
-        PokedexSplashScreen(onOpenPokemonList)
+        PokedexSplashScreen(navigateToHomeScreen)
     }
 }

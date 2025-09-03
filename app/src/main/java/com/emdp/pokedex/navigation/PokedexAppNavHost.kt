@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.emdp.core.navigation.PokedexRoutes
+import com.emdp.features.home.navigation.pokedexHomeScreen
 import com.emdp.features.pokemon_detail.presentation.PokemonDetailScreen
 import com.emdp.features.pokemon_list.navigation.pokemonListScreen
 import com.emdp.features.splash.navigation.pokedexSplashScreen
@@ -16,10 +17,15 @@ fun PokedexAppNavHost() {
     val nav = rememberNavController()
     NavHost(navController = nav, startDestination = PokedexRoutes.SplashRoute) {
         pokedexSplashScreen(
-            onOpenPokemonList = {
-                nav.navigate(PokedexRoutes.PokemonListRoute) {
+            navigateToHomeScreen = {
+                nav.navigate(PokedexRoutes.HomeRoute) {
                     popUpTo(PokedexRoutes.SplashRoute) { inclusive = true }
                 }
+            }
+        )
+        pokedexHomeScreen(
+            onOpenPokemonList = {
+                nav.navigate(PokedexRoutes.PokemonListRoute) { launchSingleTop = true }
             }
         )
         pokemonListScreen(
@@ -27,7 +33,8 @@ fun PokedexAppNavHost() {
                 nav.navigate(PokedexRoutes.PokemonDetail.build(pokemonId)) {
                     launchSingleTop = true
                 }
-            }
+            },
+            onBackClick = { nav.popBackStack() }
         )
 
         composable(

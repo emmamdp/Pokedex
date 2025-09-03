@@ -7,18 +7,13 @@ plugins {
 }
 
 android {
-    namespace = "com.emdp.features.pokemon_detail"
+    namespace = "com.emdp.features.home"
     compileSdk = 36
     defaultConfig { minSdk = 26 }
     buildFeatures { compose = true }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    testOptions {
-        unitTests.all {
-            it.jvmArgs("-XX:+EnableDynamicAgentLoading")
-        }
     }
 }
 

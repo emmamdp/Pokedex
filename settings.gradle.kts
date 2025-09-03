@@ -23,13 +23,16 @@ rootProject.name = "Pokedex"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-include(":app")
-include(":data")
-include(":domain")
-include(":features:pokemon-list")
-include(":core:common")
-include(":core:di")
-include(":features:splash")
-include(":core:ui")
-include(":core:navigation")
-include(":features:pokemon-detail")
+include(
+    ":app",
+    ":data",
+    ":domain",
+    ":core:common",
+    ":core:di",
+    ":core:ui",
+    ":core:navigation",
+    ":features:splash",
+    ":features:home",
+    ":features:pokemon-list",
+    ":features:pokemon-detail"
+)

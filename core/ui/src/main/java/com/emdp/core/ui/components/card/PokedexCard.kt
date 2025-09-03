@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.emdp.core.ui.components.favorite.PokedexFavoriteButton
+import com.emdp.core.ui.theme.PkOnPrimaryWhite
 
 @Composable
 fun PokedexCard(
@@ -46,7 +47,7 @@ fun PokedexCard(
             .shadow(6.dp, ItemShape, clip = false)
             .clip(ItemShape)
             .background(gradient)
-            .border(1.dp, Color.White.copy(alpha = 0.65f), ItemShape)
+            .border(1.dp, PkOnPrimaryWhite.copy(alpha = 0.65f), ItemShape)
             .clickable(onClick = onItemClick)
     ) {
         Row(
@@ -77,7 +78,7 @@ private fun ThunderboltCircle() {
             .shadow(6.dp, CircleShape, clip = false)
             .clip(CircleShape)
             .background(cs.primary, CircleShape)
-            .border(2.dp, Color.White, CircleShape),
+            .border(2.dp, PkOnPrimaryWhite, CircleShape),
         contentAlignment = Alignment.Center
     ) {
         Text("⚡", color = cs.onPrimary, style = MaterialTheme.typography.titleMedium)
@@ -92,13 +93,13 @@ private fun ItemText(primaryText: String, secondaryText: String, modifier: Modif
             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            color = Color.White
+            color = PkOnPrimaryWhite
         )
         Spacer(Modifier.height(4.dp))
         Text(
             text = secondaryText,
             style = MaterialTheme.typography.bodyMedium,
-            color = Color.White.copy(alpha = 0.85f)
+            color = PkOnPrimaryWhite.copy(alpha = 0.85f)
         )
     }
 }

@@ -30,10 +30,10 @@ object PokemonTypeColor {
     }
 
     fun onTextColorFor(background: Color): Color =
-        if (background.luminance() >= 0.6f) Color.Black else Color.White
+        if (background.luminance() >= 0.6f) Color.Black else PkOnPrimaryWhite
 
     fun dominantType(types: List<PokemonType>): PokemonType =
         types.firstOrNull() ?: PokemonType.UNKNOWN
 }
 
-val ProgressBarColor = Color.White
+val ProgressBarColor = PkOnPrimaryWhite

@@ -2,6 +2,7 @@ package com.emdp.core.navigation
 
 object PokedexRoutes {
     const val SplashRoute = "pokedex/splash"
+    const val HomeRoute = "pokedex/home"
     const val PokemonListRoute = "pokedex/pokemonList"
 
     object PokemonDetail {

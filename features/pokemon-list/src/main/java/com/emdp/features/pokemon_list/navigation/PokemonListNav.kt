@@ -5,8 +5,14 @@ import androidx.navigation.compose.composable
 import com.emdp.core.navigation.PokedexRoutes
 import com.emdp.features.pokemon_list.presentation.PokemonListRoute
 
-fun NavGraphBuilder.pokemonListScreen(onOpenDetail: (Int) -> Unit) {
+fun NavGraphBuilder.pokemonListScreen(
+    onOpenDetail: (Int) -> Unit,
+    onBackClick: () -> Unit
+) {
     composable(PokedexRoutes.PokemonListRoute) {
-        PokemonListRoute(onOpenDetail = onOpenDetail)
+        PokemonListRoute(
+            onOpenDetail = onOpenDetail,
+            onBackClick = onBackClick
+        )
     }
 }

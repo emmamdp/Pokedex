@@ -13,12 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.emdp.core.ui.theme.PkOnPrimaryWhite
 
 @Composable
 fun PokedexInfoPill(label: String, value: String, onColor: Color) {
     OutlinedCard(
         border = BorderStroke(width = 1.dp, color = onColor),
-        colors = CardDefaults.outlinedCardColors(containerColor = Color.White.copy(alpha = 0.10f))
+        colors = CardDefaults.outlinedCardColors(containerColor = PkOnPrimaryWhite.copy(alpha = 0.10f))
     ) {
         Column(
             modifier = Modifier.padding(vertical = 10.dp, horizontal = 14.dp),

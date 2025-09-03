@@ -21,7 +21,7 @@ fun PokedexAppTopBar(
     onBackClick: () -> Unit,
     showFavoriteButton: Boolean = false,
     isFavoriteButtonSelected: Boolean = false,
-    onToggleFavoriteButton: () -> Unit
+    onToggleFavoriteButton: () -> Unit = { }
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = titleText, color = textColor) },

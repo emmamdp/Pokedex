@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.emdp.core.ui.R
+import com.emdp.core.ui.theme.PkOnPrimaryWhite
 
 @Composable
 fun PokedexSearchBar(
@@ -50,7 +51,7 @@ fun PokedexSearchBar(
     Box(
         modifier = modifier
             .clip(shape)
-            .border(1.5.dp, Color.White, shape)
+            .border(1.5.dp, PkOnPrimaryWhite, shape)
             .background(brush = gradient, shape = shape)
             .heightIn(min = 54.dp),
         contentAlignment = Alignment.CenterStart
@@ -59,8 +60,8 @@ fun PokedexSearchBar(
             value = query,
             onValueChange = onQueryChange,
             singleLine = true,
-            textStyle = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
-            cursorBrush = SolidColor(Color.White),
+            textStyle = MaterialTheme.typography.bodyLarge.copy(color = PkOnPrimaryWhite),
+            cursorBrush = SolidColor(PkOnPrimaryWhite),
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = { onSearch(query) }),
             modifier = Modifier
@@ -68,13 +69,13 @@ fun PokedexSearchBar(
                 .padding(horizontal = 14.dp, vertical = 10.dp),
             decorationBox = { inner ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("🔎", color = Color.White)
+                    Text("🔎", color =PkOnPrimaryWhite)
                     Spacer(Modifier.width(10.dp))
                     Box(Modifier.weight(1f)) {
                         if (query.isEmpty()) {
                             Text(
                                 placeholder,
-                                color = Color.White.copy(alpha = 0.65f),
+                                color = PkOnPrimaryWhite.copy(alpha = 0.65f),
                                 style = MaterialTheme.typography.bodyLarge
                             )
                         }
@@ -84,7 +85,7 @@ fun PokedexSearchBar(
                     if (query.isNotEmpty()) {
                         Text(
                             "✕",
-                            color = Color.White.copy(alpha = 0.9f),
+                            color = PkOnPrimaryWhite.copy(alpha = 0.9f),
                             modifier = Modifier
                                 .padding(start = 6.dp)
                                 .clickDeleteText { onQueryChange("") }
