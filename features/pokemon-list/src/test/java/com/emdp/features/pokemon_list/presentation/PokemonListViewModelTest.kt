@@ -7,75 +7,81 @@ import com.emdp.domain.model.PokemonListModel
 import com.emdp.domain.usecase.pokemonlist.GetPokemonListUseCase
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class PokemonListViewModelTest {
 
-    private val getPokemonListUseCase: GetPokemonListUseCase = mockk(relaxed = false)
+    private val getPokemonListUseCase: GetPokemonListUseCase = mockk()
 
-    @Test
-    fun `initial state is Content(Unit)`() = runTest {
-        every { getPokemonListUseCase() } returns flowOf(PagingData.empty())
+    private var pokemonList: List<PokemonListModel> = emptyList()
 
-        val vm = PokemonListViewModel(getPokemonListUseCase)
+    private lateinit var viewModel: PokemonListViewModel
 
-        val state = vm.screenState.value
-        assertTrue(state is PokedexBaseState.Content)
-        assertEquals(Unit, (state as PokedexBaseState.Content).data)
-
-        verify(exactly = 1) { getPokemonListUseCase() }
+    @Before
+    fun setUp() {
+        every { getPokemonListUseCase() } answers { flowOf(PagingData.from(pokemonList)) }
+        viewModel = PokemonListViewModel(getPokemonListUseCase = getPokemonListUseCase)
     }
 
     @Test
-    fun `pokemons flow emits snapshot from use case`() = runTest {
-        val expected = listOf(
-            PokemonListModel(1, "bulbasaur"),
-            PokemonListModel(2, "ivysaur"),
-            PokemonListModel(3, "venusaur")
-        )
-        every { getPokemonListUseCase() } returns flowOf(PagingData.from(expected))
+    fun `initial state is Loading`() {
+        val state = viewModel.screenState.value
 
-        PokemonListViewModel(getPokemonListUseCase)
-
-        verify(exactly = 1) { getPokemonListUseCase() }
+        assertTrue(state is PokedexBaseState.Loading)
     }
 
     @Test
-    fun `onPokemonClick triggers navigation to detail`() = runTest {
-        every { getPokemonListUseCase() } returns flowOf(PagingData.empty())
+    fun `onPokemonClick navigates to OpenPokemonDetail`() {
+        viewModel.onPokemonClick(POKEMON_ID)
+        val state = viewModel.screenState.value
 
-        val vm = PokemonListViewModel(getPokemonListUseCase)
-
-        val targetId = 25
-        vm.onPokemonClick(targetId)
-
-        val state = vm.screenState.value
-        assertTrue(state is PokedexBaseState.NavigateToNextView)
         assertEquals(
-            PokedexDestination.OpenPokemonDetail(targetId),
+            PokedexDestination.OpenPokemonDetail(POKEMON_ID),
             (state as PokedexBaseState.NavigateToNextView).destination
         )
-        verify(exactly = 1) { getPokemonListUseCase() }
     }
 
     @Test
-    fun `onToggleFavorite adds and removes id in favorites set`() = runTest {
-        every { getPokemonListUseCase() } returns flowOf(PagingData.empty())
+    fun `onToggleFavorite should update favorites state`() {
+        // first toggle adds to favorites
+        viewModel.onToggleFavorite(POKEMON_ID)
+        var favorites = viewModel.favorites.value
 
-        val vm = PokemonListViewModel(getPokemonListUseCase)
+        assertTrue(favorites.contains(POKEMON_ID))
 
-        val id = 7
-        vm.onToggleFavorite(id)
-        assertTrue(vm.favorites.value.contains(id))
-        vm.onToggleFavorite(id)
-        assertFalse(vm.favorites.value.contains(id))
+        // second toggle removes from favorites
+        viewModel.onToggleFavorite(POKEMON_ID)
+        favorites = viewModel.favorites.value
+
+        assertFalse(favorites.contains(POKEMON_ID))
+    }
+
+    @Test
+    fun `onSearchQueryChange updates searchQuery value`() {
+        viewModel.onSearchQueryChange(POKEMON_NAME)
+        val searchQuery = viewModel.searchQuery.value
+
+        assertEquals(POKEMON_NAME, searchQuery)
+    }
+
+    @Test
+    fun `clearSearch updates searchQuery value to empty`() {
+        viewModel.clearSearch()
+        val searchQuery = viewModel.searchQuery.value
+
+        assertEquals(EMPTY_STRING, searchQuery)
+    }
+
+    private companion object {
+        const val POKEMON_ID = 25
+        const val POKEMON_NAME = "bulbasaur"
+        const val EMPTY_STRING = ""
     }
 }

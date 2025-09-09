@@ -17,6 +17,7 @@ val PkSurfaceVariant = Color(0xFF3D3D3D)
 val PkOnSurfaceVariant = Color(0xFFFAFAFA)
 
 val PkDarkRed = Color(0xFF8B0000)
+val PkMediumRed = Color(0xFFB91C1C)
 val PkFirebrick = Color(0xFFB22222)
 val PkIndianRed = Color(0xFFCD5C5C)
 
@@ -38,3 +39,5 @@ val PkHomeCardGradient01 = listOf(PkDarkAmber, PkAmber, PkOnPrimaryWhite)
 val PkHomeCardGradient02 = listOf(PkRaspberry, PkCerise, PkOnPrimaryWhite)
 val PkHomeCardGradient03 = listOf(PkDarkGreen, PkMediumGreen, PkOnPrimaryWhite)
 val PkHomeCardGradient04 = listOf(PkDarkOrgange, PkDeepOrange, PkOnPrimaryWhite)
+
+val PkPokedexSearchBarGradient = listOf(PkMediumRed, PkFirebrick, PkIndianRed)

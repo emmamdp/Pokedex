@@ -17,9 +17,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -49,6 +46,7 @@ fun PokemonListRoute(
 ) {
     val items: LazyPagingItems<PokemonListModel> = viewModel.pokemonList.collectAsLazyPagingItems()
     val favorites by viewModel.favorites.collectAsStateWithLifecycle()
+    val query by viewModel.searchQuery.collectAsStateWithLifecycle()
 
     Box(
         Modifier
@@ -70,7 +68,10 @@ fun PokemonListRoute(
                 onOpenDetail = onOpenDetail,
                 contentPadding = inner,
                 isFavorite = { id -> favorites.contains(id) },
-                onToggleFavorite = { id -> viewModel.onToggleFavorite(id) }
+                onToggleFavorite = { id -> viewModel.onToggleFavorite(id) },
+                query = query,
+                onQueryChange = viewModel::onSearchQueryChange,
+                onClearQuery = viewModel::clearSearch
             )
         }
     }
@@ -82,11 +83,13 @@ fun PokemonListScreen(
     onOpenDetail: (Int) -> Unit,
     contentPadding: PaddingValues,
     isFavorite: (Int) -> Boolean,
-    onToggleFavorite: (Int) -> Unit
+    onToggleFavorite: (Int) -> Unit,
+    query: String,
+    onQueryChange: (String) -> Unit,
+    onClearQuery: () -> Unit
 ) {
     val colorScheme = MaterialTheme.colorScheme
     val isRefreshing = items.loadState.refresh is LoadState.Loading
-    var query by rememberSaveable { mutableStateOf("") }
 
     BackgroundPokeball(modifier = Modifier.fillMaxSize())
     Column(
@@ -97,8 +100,9 @@ fun PokemonListScreen(
     ) {
         PokedexSearchBar(
             query = query,
-            onQueryChange = { query = it },
-            onSearch = { /* vm.onSearch(it) */ },
+            onQueryChange = onQueryChange,
+            onSearch = { /* optional: hide keyboard if quieres */ },
+            onClear = onClearQuery, // si tu componente lo soporta
             modifier = Modifier.fillMaxWidth()
         )
 
